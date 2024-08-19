@@ -36,7 +36,7 @@ def main():
 
     # Create a map
     m = Map(location=((bounds[1] + bounds[3]) / 2, (bounds[0] + bounds[2]) / 2), zoom_start=13)
-    zoom_start=30
+    
     # Add the tile layer to the map
     TileLayer(
         tiles=tilejson["tiles"][0],
