@@ -30,9 +30,9 @@ with rasterio.open(r'C:\Users\S0KAINA ERRAMI\Downloads\imageToDriveExample_trans
         geom = rasterio.warp.transform_geom(
             dataset.crs, 'EPSG:4326', geom, precision=6)
 
-        # URL de l'endpoint titiler
-        titiler_endpoint = "https://titiler.xyz"  # Endpoint de démonstration Developmentseed. Soyez aimable.
-        # Nouveau GeoJSON avec des coordonnées différentes
+        # URL of the titiler endpoint
+        titiler_endpoint = "https://titiler.xyz"  # Developmentseed demo endpoint. Please be kind
+        # New GeoJSON with different coordinates
         geojson = {
             "type": "FeatureCollection",
             "features": [
@@ -44,21 +44,22 @@ with rasterio.open(r'C:\Users\S0KAINA ERRAMI\Downloads\imageToDriveExample_trans
   ]
 }
 
-                        # Print GeoJSON shapes to stdout.
+                       
 
-        # Calculer les limites du polygone
+        # Calculate the limits of the polygon
         bounds = featureBounds(geojson)
-        # Créer la carte
+        # Create the map
         m = Map(
             tiles="OpenStreetMap",
             location=((bounds[1] + bounds[3]) / 2, (bounds[0] + bounds[2]) / 2),
             zoom_start=10
         )
-        # Ajouter le GeoJSON à la carte
+        # Add the GeoJSON to the map
         GeoJson(geojson).add_to(m)
-        # Sauvegarder la carte en tant que fichier HTML
+        # Save the map as an HTML file
         m.save('map.html')
-        # Ouvrir la carte dans le navigateur
+        # Open the map in the browser
         import webbrowser
         webbrowser.open('map.html')
+         # Print GeoJSON shapes to stdout.
         print(geom)
