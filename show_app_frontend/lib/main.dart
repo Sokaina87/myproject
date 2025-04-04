@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:show_app_frontend/screens/login_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const ShowApp());
 }
 
-class MyApp extends StatelessWidget {
-  @overrider
+class ShowApp extends StatelessWidget {
+  const ShowApp({super.key});
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Show App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LoginPage(),
-      debugShowCheckedModeBanner: false,
+      home: const LoginPage(),
     );
   }
 }

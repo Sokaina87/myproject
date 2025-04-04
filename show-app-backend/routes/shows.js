@@ -6,23 +6,26 @@ const db = require('../database');
 
 const router = express.Router();
 
+
 const storage = multer.diskStorage({
   destination: './uploads/',
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
   }
 });
-
 const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
+
+    cb(null, true);
+/*     const mimetype = allowedTypes.test(file.mimetype);
     if (extname && mimetype) return cb(null, true);
-    cb(new Error('Only images (JPG, PNG) are allowed!'));
+    cb(new Error('Only images (JPG, PNG) are allowed!')); */
   }
 });
+
 
 const validateShow = [
   body('title').notEmpty().withMessage('Title is required'),
@@ -30,15 +33,21 @@ const validateShow = [
   body('category').isIn(['movie', 'anime', 'serie']).withMessage('Category must be movie, anime, or serie')
 ];
 
+
 router.post('/', upload.single('image'), validateShow, (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
+  
+  
+
   const { title, description, category } = req.body;
   const image = req.file ? `/uploads/${req.file.filename}` : null;
 
+  console.log(req.body);
+  console.log(image);
   db.run(
     'INSERT INTO shows (title, description, category, image) VALUES (?, ?, ?, ?)',
     [title, description, category, image],
@@ -49,12 +58,14 @@ router.post('/', upload.single('image'), validateShow, (req, res) => {
   );
 });
 
+
 router.get('/', (req, res) => {
   db.all('SELECT * FROM shows', [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(rows);
   });
 });
+
 
 router.get('/:id', [
   param('id').isInt().withMessage('ID must be an integer')
@@ -70,6 +81,7 @@ router.get('/:id', [
     res.json(row);
   });
 });
+
 
 router.put('/:id', upload.single('image'), validateShow, (req, res) => {
   const errors = validationResult(req);
@@ -91,6 +103,7 @@ router.put('/:id', upload.single('image'), validateShow, (req, res) => {
     }
   );
 });
+
 
 router.delete('/:id', [
   param('id').isInt().withMessage('ID must be an integer')

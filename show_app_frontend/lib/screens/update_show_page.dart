@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:show_app_frontend/models/show.dart';
-import 'package:show_app_frontend/services/api_service.dart';
+import 'models/show.dart';
+import 'services/api_service.dart';
 
 class UpdateShowPage extends StatefulWidget {
   final Show show;
